@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>myChat</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      #vidContainer{
+
+        padding:15px;
+        text-align: center;
+      }
+
+      #buttonContainer{
+        text-align: center;
+        clear: both;
+      }
+
+      ul {
+        height: 52vh;
+        width: 100%;
+        overflow-y: scroll;
+      }
+
+      video {
+        border: solid;
+        height:25vh;
+        width:auto;
+      }
+
+      body {
+        width: 100%;
+        font: 13px Helvetica, Arial;
+      }
+
+      form {
+        background: black;
+        padding: 3px;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+      }
+
+      form input {
+        border: 0;
+        padding: 10px;
+        width: 90%;
+        margin-right: .5%;
+      }
+
+      form button {
+        background-color: white;
+        color: black;
+        border: 2px solid aquamarine;
+        width: 9%;
+        padding: 10px;
+      }
+
+      form button:hover {
+        background-color: aquamarine;
+        color: white;
+        border: 2px solid aquamarine;
+        width: 9%;
+        padding: 10px;
+      }
+
+      .button {
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+      }
+
+      .startButton {
+        background-color: white;
+        color: black;
+        border: 2px solid #4CAF50;
+      }
+
+      .startButton:hover {
+        background-color: #4CAF50;
+        color: white;
+        border: 2px solid #4CAF50;
+      }
+
+      .stopButton {
+        background-color: white;
+        color: black;
+        border: 2px solid #f44336;
+      }
+
+
+      .stopButton:hover {
+        background-color: #f44336;
+        color: white;
+        border: 2px solid #f44336;
+      }
+
+
+      .callButton {
+        background-color: white;
+        color: black;
+        border: 2px solid #008CBA;
+      }
+
+
+      .callButton:hover {
+        background-color: #008CBA;
+        color: white;
+        border: 2px solid #008CBA;
+      }
+
+      .hangupButton {
+        background-color: white;
+        color: black;
+        border: 2px solid orange;
+      }
+
+      .hangupButton:hover {
+        background-color: orange;
+        color: white;
+        border: 2px solid orange;
+      }
+
+      #messages {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      #messages li {
+        padding: 5px 10px;
+      }
+
+
+    </style>
+  </head>
+
+<body>
+  <div id="vidContainer">
+    <video id="video1" playsinline autoplay>VidMain</video>
+    <video id="video2" playsinline autoplay>VidSub</video>
+  </div>
+
+  <div id="buttonContainer">
+    <button id="startButton" class="button startButton">Start</button>
+    <button id="callButton" class="button callButton">Call</button>
+    <button id="stopButton" class="button stopButton">Stop</button>
+    <button id="hangupButton" class="button hangupButton">Hang Up</button>
+  </div>
+
+  <ul id="messages"></ul>
+
+  <form action="">
+    <input id="m" autocomplete="off" /><button>Send</button>
+  </form>
+</body>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <script>
+  //chat
+  $(function () {
+    var socket = io();
+    $('form').submit( (e) => {
+      e.preventDefault(); // prevents page reloading
+      socket.emit('chat message', $('#m').val());
+      $('#m').val('');
+      return false;
+    });
+    socket.on('chat message', (msg) => {
+      $('#messages').append($('<li>').text(msg));
+    });
+  });
+  </script>
+
+</html>
